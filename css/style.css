@@ -39,6 +39,14 @@ table, td {
   border: 1px solid #333;
 }
 
+/* Chart */
+#results-graph-container {
+  height: 20rem;
+  width: 40rem;
+  max-height: 95%;
+  max-width: 100%;
+}
+
 /* Colours */
 html {
   background-color: #eee;

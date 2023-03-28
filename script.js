@@ -32,6 +32,46 @@ function handleTabs (event) {
 let ropeInput = document.getElementsByClassName('rope')[0];
 ropeInput.onkeydown = handleTabs;
 
+// Create graph
+let resultsGraph = document.getElementById('results-graph');
+let chart = new Chart(resultsGraph, {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Options',
+      labels: [''],
+      data: [{}],
+    }],
+  },
+  options: {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Cuts',
+        },
+        beginAtZero: true,
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Possible trips',
+        },
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return `Cuts: ${ctx.parsed.x}, Trips: ${ctx.parsed.y} ${ctx.dataset.labels[ctx.dataIndex]}`;
+          }
+        }
+      }
+    },
+  }
+});
+
 // Handle reset button
 let tableData = document.getElementById('results-data');
 let resetButton = document.getElementById('reset');
@@ -93,7 +133,7 @@ goButton.onclick = function calculate() {
     ).sort((a,b) => (a.length > b.length));
     
     // Determine all cut options
-    all_cuts = []
+    all_cuts = [];
     cuttable_ropes.forEach(cr => {
       let _cuts = combos(Math.floor(cr/resn)).map(c => c.map(r => r*resn));
       all_cuts.push(_cuts);
@@ -104,19 +144,30 @@ goButton.onclick = function calculate() {
       let _count = possibleTripsCount(trips, set_ropes);
       let row = `<tr><td>${0}</td><td>${JSON.stringify(set_ropes)}</td><td>${_count}</td></tr>`;
       tableData.insertAdjacentHTML('beforeend', row);
+      plotOption(0, _count, JSON.stringify(set_ropes));
     } else {
-      let opts = [...cartesian(...all_cuts)];
-      opts.forEach(opt => {
+      let opts = cartesian(...all_cuts);
+      for (let opt of opts) {
         let _opt = [...set_ropes, ...opt].flat().sort().reverse();
         let _cuts = opt.map(x=>x.length).reduce((a,b)=>a+b,0)-1;
         let _count = possibleTripsCount(trips, _opt);
         let row = `<tr><td>${_cuts}</td><td>${JSON.stringify(opt)}</td><td>${_count}</td></tr>`;
         tableData.insertAdjacentHTML('beforeend', row);
-      });
+        plotOption(_cuts, _count, JSON.stringify(opt));
+      }
     }
   });
-  sorttable.makeSortable(results_table);
 };
+
+// Plot option on chart
+function plotOption(cutsCount, possibleTripsCount, label) {
+  chart.data.datasets[0].labels.push(label);
+  chart.data.datasets[0].data.push({
+    x: cutsCount,
+    y: possibleTripsCount,
+  });
+  chart.update();
+}
 
 // N.b. trips is array (sorted by increasing rope-count) of arrays (sorted by decreasing rope-length)
 // ropes is sorted by decreasing rope-length

@@ -8,6 +8,9 @@
   <script src="https://cdn.jsdelivr.net/gh/stuartlangridge/sorttable@384ec67d5feb64581dba6c64299ae772f0ac229a/sorttable/sorttable.js"
     integrity="sha256-m0Q318Dx3ZC09C/iDKw+KwVPzPDo/YJFX9pmIuj76jE="
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"
+    integrity="sha256-tgiW1vJqfIKxE0F2uVvsXbgUlTyrhPMY/sm30hh/Sxc="
+    crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <meta name="description" content="How should you cut your rope to rig as many trips as possible?">
   <meta name="author" content="Ari Cooper-Davis">
@@ -30,15 +33,15 @@
     <button type="button" id="add">+</button>
   </div>
   <button type="button" id='go'>Go</button><button type="button" id='reset'>Reset</button>
-  <!-- <h3>Graph view:</h3>
-  <div></div> -->
+  <h3>Graph view:</h3>
+  <div id="results-graph-container"><canvas id="results-graph"></canvas></div>
   <h3>Results table:</h3>
   <div>
     <table id="results-table" class="sortable">
       <thead>
         <tr>
           <th>Cuts</th>
-          <th>Lengths</th>
+          <th>Cut lengths</th>
           <th class="sorttable_numeric" id="results-table-possible-trips">Possible trips</th>
         </tr>
       </thead>
