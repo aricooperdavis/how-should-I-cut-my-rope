@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>What could I rig?</title>
+  <link rel="canonical" href="https://aricooperdavis.github.io/what-could-I-rig/">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./script.js" type="text/javascript" defer></script>
+  <script src="https://cdn.jsdelivr.net/gh/stuartlangridge/sorttable@384ec67d5feb64581dba6c64299ae772f0ac229a/sorttable/sorttable.js"
+    integrity="sha256-m0Q318Dx3ZC09C/iDKw+KwVPzPDo/YJFX9pmIuj76jE="
+    crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta name="description" content="How should you cut your rope to rig as many trips as possible?">
+  <meta name="author" content="Ari Cooper-Davis">
+  <meta name="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="/what-could-I-rig/icons/favicon.png">
+</head>
+<body>
+  <h1>What could I rig?</h1>
+  <p>Enter the ropes you want to cut, and the ropes you already have, to find out the trips you could rig by cutting your rope into different lengths.
+  <br>This tool is driven by the same data that drives the <a href="https://github.com/aricooperdavis/what-can-I-rig/">what can I rig</a> tool.</p>
+  <p>Code: <a href='https://github.com/aricooperdavis/what-could-I-rig'>Ari Cooper-Davis</a>.</p>
+  <h3>Parameters:</h3>
+  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution: </span><input type="number" id="resolution" value="5"></label>
+  <h3>Ropes:</h3>
+  <div id="lengths">
+    <span class="rope"><input type="number" value=""><label class="cut-label"><span>Cut?</span><input type="checkbox" class="cut"></label><button type="button" class="remove" disabled>-</button></span>
+    <button type="button" id="add">+</button>
+  </div>
+  <button type="button" id='go'>Go</button><button type="button" id='reset'>Reset</button>
+  <!-- <h3>Graph view:</h3>
+  <div></div> -->
+  <h3>Results table:</h3>
+  <div>
+    <table id="results-table" class="sortable">
+      <thead>
+        <tr>
+          <th>Cuts</th>
+          <th>Lengths</th>
+          <th class="sorttable_numeric" id="results-table-possible-trips">Possible trips</th>
+        </tr>
+      </thead>
+      <tbody id='results-data'>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
