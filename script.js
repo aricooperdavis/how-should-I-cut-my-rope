@@ -95,7 +95,7 @@ goButton.onclick = function calculate() {
     // Determine all cut options
     all_cuts = []
     cuttable_ropes.forEach(cr => {
-      let _cuts = combos(Math.floor(cr/resn)).map(c => c.map(r => r*5));
+      let _cuts = combos(Math.floor(cr/resn)).map(c => c.map(r => r*resn));
       all_cuts.push(_cuts);
     });
 
