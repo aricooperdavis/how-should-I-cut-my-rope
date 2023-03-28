@@ -23,10 +23,10 @@
   <p><b>Note:</b> This tool evaluates every single possible combination of potential rope cuts. Therefore if you choose to cut very long and/or a high number of ropes, or choose a small resolution, processing may take a <em>very</em> long time.
   All processing is done in your browser using client-side javascript.</p>
   <h3>Parameters:</h3>
-  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution: </span><input type="number" id="resolution" value="5"></label>
+  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution: </span><input type="number" id="resolution" value="5">&nbsp;m</label>
   <h3>Ropes:</h3>
   <div id="lengths">
-    <span class="rope"><input type="number" value=""><label class="cut-label"><span>Cut?</span><input type="checkbox" class="cut"></label><button type="button" class="remove" disabled>-</button></span>
+    <span class="rope"><input type="number" value=""><label class="cut-label">&nbsp;m <span>Cut?</span><input type="checkbox" class="cut"></label><button type="button" class="remove" disabled>-</button></span>
     <button type="button" id="add">+</button>
   </div>
   <button type="button" id='go'>Go</button><button type="button" id='reset'>Reset</button>
