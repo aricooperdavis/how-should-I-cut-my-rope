@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>What could I rig?</title>
-  <link rel="canonical" href="https://aricooperdavis.github.io/what-could-I-rig/">
+  <title>How should I cut my rope?</title>
+  <link rel="canonical" href="https://aricooperdavis.github.io/how-should-I-cut-my-rope/">
   <link rel="stylesheet" href="./css/style.css">
   <script src="./script.js" type="text/javascript" defer></script>
   <script src="https://cdn.jsdelivr.net/gh/stuartlangridge/sorttable@384ec67d5feb64581dba6c64299ae772f0ac229a/sorttable/sorttable.js"
@@ -16,15 +16,22 @@
   <meta name="author" content="Ari Cooper-Davis">
   <meta name="og:type" content="website">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" type="image/x-icon" href="/what-could-I-rig/icons/favicon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="/how-should-I-cut-my-rope/icons/favicon.png">
 </head>
 <body>
-  <h1>What could I rig?</h1>
+  <h1>How should I cut my rope?</h1>
   <p>Enter the ropes you want to cut, and the ropes you already have, to find out the trips you could rig by cutting your rope into different lengths.
   <br>This tool is driven by the same data that drives the <a href="https://github.com/aricooperdavis/what-can-I-rig/">what can I rig</a> tool.</p>
-  <p>Code: <a href='https://github.com/aricooperdavis/what-could-I-rig'>Ari Cooper-Davis</a>.</p>
-  <p><b>Note:</b> This tool evaluates every single possible combination of potential rope cuts. Therefore if you choose to cut very long and/or a high number of ropes, or choose a small resolution, processing may take a <em>very</em> long time.
-  All processing is done in your browser using client-side javascript.</p>
+  <p>Code: <a href='https://github.com/aricooperdavis/how-should-I-cut-my-rope'>Ari Cooper-Davis</a>.</p>
+  <h3>Usage notes:</h3>
+  <p>The results are displayed in terms of <em>possible trips</em> and <em>efficiency</em>.
+    <ul>
+      <li><em>Possible trips</em> describes the number of trips in the database that can be rigged for a given rope-cut combination.</li>
+      <li><em>Efficiency</em> describes the average ratio of rope carried for a trip that is needed for that trip. For example rigging a 10m pitch with a 100m rope would have an efficiency of 0.1, whilst using a 20m rope for the same pitch would have an efficiency of 0.5.</li>
+    </ul>
+  </p>
+  <p>The <em>cut lengths</em> listed in the table and on the graph are only for those ropes that you have opted to cut, however the possible trips and efficiency calculation factors in your other ropes too.</p>
+  <p>This tool evaluates every single possible combination of potential rope cuts. Therefore if you choose to cut very long and/or a high number of ropes, or choose a high resolution (small number), processing may take a <em>very</em> long time. All processing is done in your browser using client-side javascript.</p>
   <h3>Parameters:</h3>
   <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution: </span><input type="number" id="resolution" value="5">&nbsp;m</label>
   <h3>Ropes:</h3>
@@ -40,9 +47,9 @@
     <table id="results-table" class="sortable">
       <thead>
         <tr>
-          <th>Cuts</th>
           <th>Cut lengths</th>
           <th class="sorttable_numeric" id="results-table-possible-trips">Possible trips</th>
+          <th>Efficiency</th>
         </tr>
       </thead>
       <tbody id='results-data'>

@@ -48,23 +48,21 @@ let chart = new Chart(resultsGraph, {
       x: {
         title: {
           display: true,
-          text: 'Cuts',
+          text: 'Efficiency',
         },
-        beginAtZero: true,
       },
       y: {
         title: {
           display: true,
           text: 'Possible trips',
         },
-        beginAtZero: true,
       },
     },
     plugins: {
       tooltip: {
         callbacks: {
           label: function(ctx) {
-            return `Cuts: ${ctx.parsed.x}, Trips: ${ctx.parsed.y} ${ctx.dataset.labels[ctx.dataIndex]}`;
+            return `Score: ${ctx.parsed.x}, Trips: ${ctx.parsed.y} ${ctx.dataset.labels[ctx.dataIndex]}`;
           }
         }
       }
@@ -111,7 +109,7 @@ goButton.onclick = function calculate() {
       }
     }
   }
-  set_ropes.sort((a,b) => a < b);
+  set_ropes.sort((a,b) => a > b);
 
   // Reset output
   tableData.innerHTML = '';
@@ -134,8 +132,8 @@ goButton.onclick = function calculate() {
         trip.includes('[') ? trip.split(',').slice(3,) : trip.split(',').slice(1,)
       ).map(
         pitch => parseInt(pitch)
-      ).sort((a,b) => a < b)
-    ).sort((a,b) => (a.length > b.length));
+      ).sort((a,b) => a > b)
+    ).sort((a,b) => (a.length < b.length));
     
     // Determine all cut options
     all_cuts = [];
@@ -146,47 +144,71 @@ goButton.onclick = function calculate() {
 
     // Calculate possible trips for all combinations
     if (all_cuts.length == 0) {
-      let _count = possibleTripsCount(trips, set_ropes);
-      let row = `<tr><td>${0}</td><td>${JSON.stringify(set_ropes)}</td><td>${_count}</td></tr>`;
+      let [_count, _score] = scoreRopes(trips, set_ropes);
+      let row = `<tr><td>${JSON.stringify(set_ropes)}</td><td>${_count}</td><td>${_score}</td></tr>`;
       tableData.insertAdjacentHTML('beforeend', row);
-      plotOption(0, _count, JSON.stringify(set_ropes));
+      plotOption(_score, _count, JSON.stringify(set_ropes));
     } else {
       let opts = cartesian(...all_cuts);
       for (let opt of opts) {
-        let _opt = [...set_ropes, ...opt].flat().sort().reverse();
-        let _cuts = opt.map(x=>x.length).reduce((a,b)=>a+b,0)-1;
-        let _count = possibleTripsCount(trips, _opt);
-        let row = `<tr><td>${_cuts}</td><td>${JSON.stringify(opt)}</td><td>${_count}</td></tr>`;
+        let _opt = [...set_ropes, ...opt].flat().sort((a,b) => (a > b));
+        let [_count, _score] = scoreRopes(trips, _opt);
+        let row = `<tr><td>${JSON.stringify(opt)}</td><td>${_count}</td><td>${_score}</td></tr>`;
         tableData.insertAdjacentHTML('beforeend', row);
-        plotOption(_cuts, _count, JSON.stringify(opt));
+        plotOption(_score, _count, JSON.stringify(opt));
       }
     }
   });
 };
 
-// Plot option on chart
-function plotOption(cutsCount, possibleTripsCount, label) {
-  chart.data.datasets[0].labels.push(label);
-  chart.data.datasets[0].data.push({
-    x: cutsCount,
-    y: possibleTripsCount,
-  });
-  chart.update();
-}
-
-// N.b. trips is array (sorted by increasing rope-count) of arrays (sorted by decreasing rope-length)
-// ropes is sorted by decreasing rope-length
-function possibleTripsCount(trips, ropes) {
+// Score a given set of ropes using a given set of trips. This score is the
+// efficiency, that is on average how much of the carried rope is used to rig
+// the trips.
+// Parameters: list of trips sorted by ascending pitch lengths, list of ropes
+// sorted by ascending rope length
+// Returns: a trip count and a score
+function scoreRopes(trips, ropes) {
   let count = 0;
+  let score = 0;
   for (let t = 0; t < trips.length; t++) {
     let trip = trips[t];
-    // Short circuit where possible
-    if (trip.length > ropes.length) break;
-    if (trip[0] > ropes[0]) continue;
-    // Count possible trips
-    if (trip.every((pitch, i) => pitch <= ropes[i])) count++;
+    // Shortcut obviously impossible trips
+    if (trip.length > ropes.length || Math.max(...trip) > Math.max(...ropes)) continue;
+    let trip_score = 0;
+    let p = 0;
+    let r = 0;
+    while (p < trip.length && r < ropes.length) {
+      // Rope is too small for pitch
+      if (trip[p] > ropes[r]) {
+        r++;
+      // Rope is used for pitch
+      } else {
+        let pitch_score = (trip[p]/ropes[r]);
+        p++;
+        trip_score += (pitch_score-trip_score)/p; // https://math.stackexchange.com/questions/106700/incremental-averaging
+        r++;
+      }
+    }
+    // Run out of ropes
+    if (p < trip.length) {
+      continue;
+    // Successfully allocated ropes
+    } else {
+      count++;
+      score += (trip_score-score)/count;
+    }
   }
-  return count;
+  return [count, score.toFixed(3)];
+}
+
+// Plot option on chart
+function plotOption(score, trips, label) {
+  chart.data.datasets[0].labels.push(label);
+  chart.data.datasets[0].data.push({
+    x: score,
+    y: trips,
+  });
+  chart.update();
 }
 
 // Get cartesian product of multiple arrays (select 1 element from each array)
