@@ -91,9 +91,17 @@ resetButton.onclick = function reset() {
 };
 
 // Handle go button
+let spinner = document.getElementById('spinner');
 let results_table = document.getElementById('results-table');
 let goButton = document.getElementById('go');
 goButton.onclick = function calculate() {
+
+  // Reset output
+  spinner.className = 'spinner';
+  tableData.innerHTML = '';
+  chart.data.datasets[0].data.length = 1;
+  chart.data.datasets[0].labels.length = 1;
+  chart.update();
 
   // Get user rope details
   let resn = document.getElementById('resolution').value;
@@ -110,12 +118,6 @@ goButton.onclick = function calculate() {
     }
   }
   set_ropes.sort((a,b) => a > b);
-
-  // Reset output
-  tableData.innerHTML = '';
-  chart.data.datasets[0].data.length = 1;
-  chart.data.datasets[0].labels.length = 1;
-  chart.update();
 
   // Get trip lengths
   Promise.all(
@@ -158,6 +160,8 @@ goButton.onclick = function calculate() {
         plotOption(_score, _count, JSON.stringify(opt));
       }
     }
+  }).then(() => {
+    spinner.className = 'spinner--hidden';
   });
 };
 
