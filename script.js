@@ -84,10 +84,12 @@ resetButton.onclick = function reset() {
       el.firstChild.value = '';
     };
   };
-  // remove results data
-  tableData.innerHTML = '';
-  // Uncheck cut
   Array.from(document.getElementsByClassName('cut')).forEach(el => el.checked = false);
+  // Reset outputs
+  tableData.innerHTML = '';
+  chart.data.datasets[0].data.length = 1;
+  chart.data.datasets[0].labels.length = 1;
+  chart.update();
 };
 
 // Handle go button
@@ -113,6 +115,9 @@ goButton.onclick = function calculate() {
 
   // Reset output
   tableData.innerHTML = '';
+  chart.data.datasets[0].data.length = 1;
+  chart.data.datasets[0].labels.length = 1;
+  chart.update();
 
   // Get trip lengths
   Promise.all(
