@@ -50,12 +50,15 @@ let chart = new Chart(resultsGraph, {
           display: true,
           text: 'Efficiency',
         },
+        min: 0,
+        max: 1,
       },
       y: {
         title: {
           display: true,
           text: 'Possible trips',
         },
+        min: 0,
       },
     },
     plugins: {
@@ -67,6 +70,8 @@ let chart = new Chart(resultsGraph, {
         }
       }
     },
+    animation: false,
+    parsing: false,
   }
 });
 
@@ -162,6 +167,7 @@ goButton.onclick = function calculate() {
     }
   }).then(() => {
     spinner.className = 'spinner--hidden';
+    chart.update();
   });
 };
 
@@ -212,7 +218,6 @@ function plotOption(score, trips, label) {
     x: score,
     y: trips,
   });
-  chart.update();
 }
 
 // Get cartesian product of multiple arrays (select 1 element from each array)
