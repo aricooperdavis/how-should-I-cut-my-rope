@@ -50,15 +50,12 @@ let chart = new Chart(resultsGraph, {
           display: true,
           text: 'Efficiency',
         },
-        min: 0,
-        max: 1,
       },
       y: {
         title: {
           display: true,
           text: 'Possible trips',
         },
-        min: 0,
       },
     },
     plugins: {
