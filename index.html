@@ -32,8 +32,9 @@
   </p>
   <p>The <em>cut lengths</em> listed in the table and on the graph are only for those ropes that you have opted to cut, however the possible trips and efficiency calculation factors in your other ropes too.</p>
   <p>This tool evaluates every single possible combination of potential rope cuts. Therefore if you choose to cut very long and/or a high number of ropes, or choose a high resolution (small number), processing may take a <em>very</em> long time. All processing is done in your browser using client-side javascript.</p>
-  <h3>Parameters:</h3>
-  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution: </span><input type="number" id="resolution" value="5">&nbsp;m</label>
+  <h3>Options:</h3>
+  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution:&nbsp;</span><input type="number" id="resolution" value="5">&nbsp;m</label></p>
+  <p><label><span title="To improve page responsiveness disable the graph view">Graph view:&nbsp;</span><input type="checkbox" id="graph" checked></label></p>
   <h3>Ropes:</h3>
   <div id="lengths">
     <span class="rope"><input type="number" value=""><label class="cut-label">&nbsp;m <span>Cut?</span><input type="checkbox" class="cut"></label><button type="button" class="remove" disabled>-</button></span>

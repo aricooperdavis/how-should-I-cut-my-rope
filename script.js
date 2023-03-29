@@ -96,6 +96,7 @@ resetButton.onclick = function reset() {
 let spinner = document.getElementById('spinner');
 let results_table = document.getElementById('results-table');
 let goButton = document.getElementById('go');
+let chart_checkbox = document.getElementById('graph');
 goButton.onclick = function calculate() {
 
   // Reset output
@@ -164,7 +165,7 @@ goButton.onclick = function calculate() {
     }
   }).then(() => {
     spinner.className = 'spinner--hidden';
-    chart.update();
+    if (chart_checkbox.checked) chart.update();
   });
 };
 
