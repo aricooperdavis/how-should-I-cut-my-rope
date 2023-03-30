@@ -141,6 +141,8 @@ goButton.onclick = function calculate() {
         pitch => parseInt(pitch)
       ).sort((a,b) => a > b)
     ).sort((a,b) => (a.length < b.length));
+    let possible_trips_label = document.getElementById('results-table-possible-trips');
+    possible_trips_label.textContent = `Possible trips (of ${trips.length})`;
     
     // Determine all cut options
     all_cuts = [];
