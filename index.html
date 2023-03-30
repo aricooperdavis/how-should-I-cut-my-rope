@@ -24,16 +24,23 @@
   <br>This tool is driven by the same data that drives the <a href="https://github.com/aricooperdavis/what-can-I-rig/">what can I rig</a> tool.</p>
   <p>Code: <a href='https://github.com/aricooperdavis/how-should-I-cut-my-rope'>Ari Cooper-Davis</a>.</p>
   <h3>Usage notes:</h3>
-  <p>The results are displayed in terms of <em>possible trips</em> and <em>efficiency</em>.
+  <p>This tool evaluates every single possible combination of potential rope cuts, in your browser, which can take a very long time. There are some options you can tweak to improve performance:
+    <ul>
+      <li>The <em>resolution</em> defines the minimum length your ropes can be cut to, substantially reducing the time taken to calculate the results.</li>
+      <li>The <em>combination limit</em> only stores and displays the results that have the highest number of possible trips and highest efficiency (see below for what this means). This improves page responsiveness once results are generated.</li>
+      <li>Disabling the <em>graph view</em> improves the page responsiveness once the results are generated.</li>
+    </ul>
+  </p>
+  <p>The results are displayed in terms of <em>possible trips</em> and <em>efficiency</em>:
     <ul>
       <li><em>Possible trips</em> describes the number of trips in the database that can be rigged for a given rope-cut combination.</li>
       <li><em>Efficiency</em> describes the average ratio of rope carried for a trip that is needed for that trip. For example rigging a 10m pitch with a 100m rope would have an efficiency of 0.1, whilst using a 20m rope for the same pitch would have an efficiency of 0.5.</li>
     </ul>
   </p>
   <p>The <em>cut lengths</em> listed in the table and on the graph are only for those ropes that you have opted to cut, however the possible trips and efficiency calculation factors in your other ropes too.</p>
-  <p>This tool evaluates every single possible combination of potential rope cuts. Therefore if you choose to cut very long and/or a high number of ropes, or choose a high resolution (small number), processing may take a <em>very</em> long time. All processing is done in your browser using client-side javascript.</p>
   <h3>Options:</h3>
-  <p><label><span title="To reduce algorithm complexity your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution:&nbsp;</span><input type="number" id="resolution" value="5">&nbsp;m</label></p>
+  <p><label><span title="Your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution:&nbsp;</span><input type="number" id="resolution" value="5">&nbsp;m</label></p>
+  <p><label><span title="Only record the `combination limit` rope combinations with the highest number of possible trips.">Combination limit:&nbsp;</span><input type="number" id="combinations" value="100"></label></p>
   <p><label><span title="To improve page responsiveness disable the graph view">Graph view:&nbsp;</span><input type="checkbox" id="graph" checked></label></p>
   <h3>Ropes:</h3>
   <div id="lengths">

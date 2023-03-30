@@ -73,6 +73,8 @@ let chart = new Chart(resultsGraph, {
 });
 
 // Handle reset button
+let chart_checkbox = document.getElementById('graph');
+let combination_limit = document.getElementById('combinations');
 let tableData = document.getElementById('results-data');
 let resetButton = document.getElementById('reset');
 resetButton.onclick = function reset() {
@@ -85,6 +87,8 @@ resetButton.onclick = function reset() {
     };
   };
   Array.from(document.getElementsByClassName('cut')).forEach(el => el.checked = false);
+  chart_checkbox.checked = true;
+  combination_limit.value = 1000;
   // Reset outputs
   tableData.innerHTML = '';
   chart.data.datasets[0].data.length = 1;
@@ -96,7 +100,6 @@ resetButton.onclick = function reset() {
 let spinner = document.getElementById('spinner');
 let results_table = document.getElementById('results-table');
 let goButton = document.getElementById('go');
-let chart_checkbox = document.getElementById('graph');
 goButton.onclick = function calculate() {
 
   // Reset output
@@ -148,21 +151,47 @@ goButton.onclick = function calculate() {
     });
 
     // Calculate possible trips for all combinations
+    let count_results = [];
+    let score_results = [];
     if (all_cuts.length == 0) {
       let [_count, _score] = scoreRopes(trips, set_ropes);
-      let row = `<tr><td>${JSON.stringify(set_ropes)}</td><td>${_count}</td><td>${_score}</td></tr>`;
-      tableData.insertAdjacentHTML('beforeend', row);
-      plotOption(_score, _count, JSON.stringify(set_ropes));
+      count_results.push([_count, _score, set_ropes]);
+      score_results.push([_count, _score, set_ropes]);
     } else {
       let opts = cartesian(...all_cuts);
       for (let opt of opts) {
         let _opt = [...set_ropes, ...opt].flat().sort((a,b) => (a > b));
         let [_count, _score] = scoreRopes(trips, _opt);
-        let row = `<tr><td>${JSON.stringify(opt)}</td><td>${_count}</td><td>${_score}</td></tr>`;
-        tableData.insertAdjacentHTML('beforeend', row);
-        plotOption(_score, _count, JSON.stringify(opt));
+        if ( count_results.length < parseInt(combination_limit.value)
+          || _count > Math.min(...count_results.map(e=>e[0]))
+        ) {
+          count_results.push([_count, _score, opt]);
+          if (count_results.length > parseInt(combination_limit.value)) {
+            count_results = count_results.sort((a,b) => a[0] > b[0]).filter((_,i) => i);
+          }
+        }
+        if (
+          score_results.length < parseInt(combination_limit.value)
+          || _count > Math.min(...score_results.map(e=>e[1]))
+        ) {
+          score_results.push([_count, _score, opt]);
+          if (score_results.length > parseInt(combination_limit.value)) {
+            score_results = score_results.sort((a,b) => a[1] > b[1]).filter((_,i) => i);
+          }
+        }
       }
     }
+
+    // Update DOM with results
+    let results = new Set(score_results.concat(count_results).map(JSON.stringify));
+    results = Array.from(results).map(JSON.parse);
+    for (let r = 0; r < results.length; r++) {
+      let result = results[r];
+      let row = `<tr><td>${JSON.stringify(result[2])}</td><td>${result[0]}</td><td>${result[1]}</td></tr>`;
+      tableData.insertAdjacentHTML('beforeend', row);
+      plotOption(result[1], result[0], JSON.stringify(result[2])); 
+    }
+
   }).then(() => {
     spinner.className = 'spinner--hidden';
     if (chart_checkbox.checked) chart.update();
