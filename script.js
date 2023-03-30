@@ -62,13 +62,12 @@ let chart = new Chart(resultsGraph, {
       tooltip: {
         callbacks: {
           label: function(ctx) {
-            return `Score: ${ctx.parsed.x}, Trips: ${ctx.parsed.y} ${ctx.dataset.labels[ctx.dataIndex]}`;
+            return `Efficiency: ${ctx.parsed.x}, Trips: ${ctx.parsed.y} ${ctx.dataset.labels[ctx.dataIndex]}`;
           }
         }
       }
     },
     animation: false,
-    parsing: false,
   }
 });
 
