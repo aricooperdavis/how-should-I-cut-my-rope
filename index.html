@@ -8,6 +8,9 @@
   <script src="https://cdn.jsdelivr.net/gh/stuartlangridge/sorttable@384ec67d5feb64581dba6c64299ae772f0ac229a/sorttable/sorttable.js"
     integrity="sha256-m0Q318Dx3ZC09C/iDKw+KwVPzPDo/YJFX9pmIuj76jE="
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/justinormont/pareto-frontier@77822b397a50023b9f7a052c8aa849ca06c7f437/index.js"
+    integrity="sha256-nk9leHd0ug7BaBF+s6jHeWg8GDqjIAXbPw8svR5DZQo="
+    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"
     integrity="sha256-tgiW1vJqfIKxE0F2uVvsXbgUlTyrhPMY/sm30hh/Sxc="
     crossorigin="anonymous"></script>
@@ -27,7 +30,7 @@
   <p>This tool evaluates every single possible combination of potential rope cuts, in your browser, which can take a very long time. There are some options you can tweak to improve performance:
     <ul>
       <li>The <em>resolution</em> defines the minimum length your ropes can be cut to, substantially reducing the time taken to calculate the results.</li>
-      <li>The <em>combination limit</em> only stores and displays the results that have the highest number of possible trips and highest efficiency (see below for what this means). This improves page responsiveness once results are generated.</li>
+      <li>Enabling the <em>pareto-frontier</em> displays only the "<a href="https://simple.wikipedia.org/wiki/Pareto_efficiency">Pareto efficient</a>" rope combinations, increasing computation time but dramatically improving page responsiveness once the results have been generated.</li>
       <li>Disabling the <em>graph view</em> improves the page responsiveness once the results are generated.</li>
     </ul>
   </p>
@@ -40,7 +43,7 @@
   <p>The <em>cut lengths</em> listed in the table and on the graph are only for those ropes that you have opted to cut, however the possible trips and efficiency calculation factors in your other ropes too.</p>
   <h3>Options:</h3>
   <p><label><span title="Your rope lengths and cuts will be rounded to the lengths of `resolution`.">Resolution:&nbsp;</span><input type="number" id="resolution" value="5">&nbsp;m</label></p>
-  <p><label><span title="Only record the `combination limit` rope combinations with the highest number of possible trips.">Combination limit:&nbsp;</span><input type="number" id="combinations" value="100"></label></p>
+  <p><label><span title="To improve page responsiveness display only the pareto-frontier">Pareto-frontier:&nbsp;</span><input type="checkbox" id="paretofrontier" checked></label></p>
   <p><label><span title="To improve page responsiveness disable the graph view">Graph view:&nbsp;</span><input type="checkbox" id="graph" checked></label></p>
   <h3>Ropes:</h3>
   <div id="lengths">

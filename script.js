@@ -74,7 +74,7 @@ let chart = new Chart(resultsGraph, {
 
 // Handle reset button
 let chart_checkbox = document.getElementById('graph');
-let combination_limit = document.getElementById('combinations');
+let pf_checkbox = document.getElementById('paretofrontier');
 let tableData = document.getElementById('results-data');
 let resetButton = document.getElementById('reset');
 resetButton.onclick = function reset() {
@@ -88,7 +88,7 @@ resetButton.onclick = function reset() {
   };
   Array.from(document.getElementsByClassName('cut')).forEach(el => el.checked = false);
   chart_checkbox.checked = true;
-  combination_limit.value = 1000;
+  pf_checkbox.checked = false;
   // Reset outputs
   tableData.innerHTML = '';
   chart.data.datasets[0].data.length = 1;
@@ -151,40 +151,27 @@ goButton.onclick = function calculate() {
     });
 
     // Calculate possible trips for all combinations
-    let count_results = [];
-    let score_results = [];
+    let results = [];
     if (all_cuts.length == 0) {
       let [_count, _score] = scoreRopes(trips, set_ropes);
-      count_results.push([_count, _score, set_ropes]);
-      score_results.push([_count, _score, set_ropes]);
+      results.push([_count, _score, set_ropes]);
     } else {
       let opts = cartesian(...all_cuts);
       for (let opt of opts) {
         let _opt = [...set_ropes, ...opt].flat().sort((a,b) => (a > b));
         let [_count, _score] = scoreRopes(trips, _opt);
-        if ( count_results.length < parseInt(combination_limit.value)
-          || _count > Math.min(...count_results.map(e=>e[0]))
-        ) {
-          count_results.push([_count, _score, opt]);
-          if (count_results.length > parseInt(combination_limit.value)) {
-            count_results = count_results.sort((a,b) => a[0] > b[0]).filter((_,i) => i);
-          }
-        }
-        if (
-          score_results.length < parseInt(combination_limit.value)
-          || _count > Math.min(...score_results.map(e=>e[1]))
-        ) {
-          score_results.push([_count, _score, opt]);
-          if (score_results.length > parseInt(combination_limit.value)) {
-            score_results = score_results.sort((a,b) => a[1] > b[1]).filter((_,i) => i);
-          }
-        }
+        results.push([_count, _score, opt]);
       }
     }
 
-    // Update DOM with results
-    let results = new Set(score_results.concat(count_results).map(JSON.stringify));
+    // Filter so results are unique
+    results = new Set(results.map(JSON.stringify));
     results = Array.from(results).map(JSON.parse);
+    // Calculate paretofrontier
+    if (pf_checkbox.checked) {
+      results = getParetoFrontier(results);
+    }
+    // Update DOM with results
     for (let r = 0; r < results.length; r++) {
       let result = results[r];
       let row = `<tr><td>${JSON.stringify(result[2])}</td><td>${result[0]}</td><td>${result[1]}</td></tr>`;
